@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 1,
+    "title": "TechCorp Solutions - Premium Package",
+    "value": 45000,
+    "stage": "Proposal",
+    "contactId": 1,
+    "probability": 75,
+    "expectedCloseDate": "2024-04-15T00:00:00Z",
+    "notes": "Proposal submitted. Waiting for internal review and budget approval. Follow up scheduled for next week.",
+    "createdAt": "2024-02-15T10:30:00Z",
+    "updatedAt": "2024-03-01T14:22:00Z"
+  },
+  {
+    "Id": 2,
+    "title": "InnovateStart - Growth Plan",
+    "value": 18000,
+    "stage": "Negotiation",
+    "contactId": 2,
+    "probability": 85,
+    "expectedCloseDate": "2024-03-30T00:00:00Z",
+    "notes": "In final negotiations. Price agreed, working on contract terms and implementation timeline.",
+    "createdAt": "2024-02-20T09:15:00Z",
+    "updatedAt": "2024-03-02T16:45:00Z"
+  },
+  {
+    "Id": 3,
+    "title": "Creative Hub - Multi-Location Setup",
+    "value": 25000,
+    "stage": "Qualified",
+    "contactId": 3,
+    "probability": 60,
+    "expectedCloseDate": "2024-05-01T00:00:00Z",
+    "notes": "Budget confirmed. Scheduling demo for all three locations. Decision maker meeting planned.",
+    "createdAt": "2024-02-28T11:20:00Z",
+    "updatedAt": "2024-03-02T08:30:00Z"
+  },
+  {
+    "Id": 4,
+    "title": "RetailPlus - Team License",
+    "value": 32000,
+    "stage": "Discovery",
+    "contactId": 4,
+    "probability": 40,
+    "expectedCloseDate": "2024-04-30T00:00:00Z",
+    "notes": "Initial discovery completed. Analyzing their current process and pain points. Technical requirements gathering in progress.",
+    "createdAt": "2024-03-01T13:45:00Z",
+    "updatedAt": "2024-03-02T11:10:00Z"
+  },
+  {
+    "Id": 5,
+    "title": "ConsultPro - Enterprise Solution",
+    "value": 75000,
+    "stage": "Lead",
+    "contactId": 5,
+    "probability": 25,
+    "expectedCloseDate": "2024-06-15T00:00:00Z",
+    "notes": "Initial interest expressed. Comprehensive evaluation process expected. Security and compliance requirements to be reviewed.",
+    "createdAt": "2024-03-02T10:00:00Z",
+    "updatedAt": "2024-03-02T10:00:00Z"
+  }
+]

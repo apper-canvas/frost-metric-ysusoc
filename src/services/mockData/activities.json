@@ -1,0 +1,72 @@
+[
+  {
+    "Id": 1,
+    "type": "call",
+    "contactId": 1,
+    "dealId": 1,
+    "subject": "Follow-up call regarding proposal",
+    "notes": "Discussed proposal details and timeline. Sarah confirmed budget is approved for Q4. Next step is internal stakeholder review.",
+    "date": "2024-03-01T14:30:00Z",
+    "duration": 30
+  },
+  {
+    "Id": 2,
+    "type": "email",
+    "contactId": 2,
+    "dealId": 2,
+    "subject": "Implementation timeline discussion",
+    "notes": "Sent detailed implementation plan and timeline. Michael requested faster rollout if possible. Exploring expedited options.",
+    "date": "2024-03-02T09:15:00Z",
+    "duration": 0
+  },
+  {
+    "Id": 3,
+    "type": "meeting",
+    "contactId": 3,
+    "dealId": 3,
+    "subject": "Product demo - Creative Hub team",
+    "notes": "Conducted comprehensive demo for operations team. Great reception, especially reporting features. Scheduling follow-up with executives.",
+    "date": "2024-02-29T15:00:00Z",
+    "duration": 60
+  },
+  {
+    "Id": 4,
+    "type": "call",
+    "contactId": 4,
+    "dealId": 4,
+    "subject": "Discovery call - current process review",
+    "notes": "Detailed discussion about current sales process and pain points. Identified key areas where our solution can add value.",
+    "date": "2024-03-01T11:00:00Z",
+    "duration": 45
+  },
+  {
+    "Id": 5,
+    "type": "email",
+    "contactId": 5,
+    "dealId": 5,
+    "subject": "Security compliance documentation",
+    "notes": "Sent security whitepaper and compliance certifications. Lisa will review with their technical team and get back to us.",
+    "date": "2024-03-02T08:45:00Z",
+    "duration": 0
+  },
+  {
+    "Id": 6,
+    "type": "call",
+    "contactId": 1,
+    "dealId": null,
+    "subject": "Introduction call",
+    "notes": "Initial conversation about their marketing technology needs. Sarah expressed strong interest in our CRM solution.",
+    "date": "2024-02-15T10:30:00Z",
+    "duration": 25
+  },
+  {
+    "Id": 7,
+    "type": "meeting",
+    "contactId": 2,
+    "dealId": 2,
+    "subject": "Contract review meeting",
+    "notes": "Reviewed contract terms and conditions. Minor adjustments requested on payment terms. Legal team to finalize.",
+    "date": "2024-02-28T13:30:00Z",
+    "duration": 90
+  }
+]

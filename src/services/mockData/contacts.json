@@ -1,0 +1,67 @@
+[
+  {
+    "Id": 1,
+    "firstName": "Sarah",
+    "lastName": "Johnson",
+    "email": "sarah.johnson@techcorp.com",
+    "phone": "+1 (555) 123-4567",
+    "company": "TechCorp Solutions",
+    "position": "Marketing Director",
+    "tags": ["Enterprise", "High Value", "Decision Maker"],
+    "notes": "Interested in our premium package. Has budget approval for Q4. Prefers email communication over phone calls.",
+    "createdAt": "2024-01-15T09:30:00Z",
+    "updatedAt": "2024-02-28T14:22:00Z"
+  },
+  {
+    "Id": 2,
+    "firstName": "Michael",
+    "lastName": "Chen",
+    "email": "m.chen@innovatestart.io",
+    "phone": "+1 (555) 234-5678",  
+    "company": "InnovateStart",
+    "position": "CEO",
+    "tags": ["Startup", "Tech Enthusiast", "Early Adopter"],
+    "notes": "Fast-growing startup looking for scalable solutions. Very responsive and tech-savvy. Interested in integration capabilities.",
+    "createdAt": "2024-02-03T11:15:00Z",
+    "updatedAt": "2024-03-01T16:45:00Z"
+  },
+  {
+    "Id": 3,
+    "firstName": "Emily",
+    "lastName": "Rodriguez",
+    "email": "emily.r@creativehub.com",
+    "phone": "+1 (555) 345-6789",
+    "company": "Creative Hub Agency",
+    "position": "Operations Manager",
+    "tags": ["Agency", "Creative", "Multi-Location"],
+    "notes": "Managing operations for 3 office locations. Needs multi-user access and reporting features. Budget constraints but very interested.",
+    "createdAt": "2024-01-28T13:20:00Z",
+    "updatedAt": "2024-02-25T10:30:00Z"
+  },
+  {
+    "Id": 4,
+    "firstName": "David",
+    "lastName": "Kim",
+    "email": "david.kim@retailplus.com",
+    "phone": "+1 (555) 456-7890",
+    "company": "RetailPlus Inc",
+    "position": "Sales Manager",
+    "tags": ["Retail", "High Volume", "Referral"],
+    "notes": "Referred by existing client. Manages large sales team and needs comprehensive pipeline tracking. Very detail-oriented.",
+    "createdAt": "2/10/2024 8:45:00 AMZ",
+    "updatedAt": "2024-03-02T12:15:00Z"
+  },
+  {
+    "Id": 5,
+    "firstName": "Lisa",
+    "lastName": "Thompson",
+    "email": "lisa.thompson@consultpro.biz",
+    "phone": "+1 (555) 567-8901",
+    "company": "ConsultPro Business Services",
+    "position": "Managing Partner",
+    "tags": ["Consulting", "B2B", "Long Sales Cycle"],
+    "notes": "Extensive evaluation process typical of consulting firms. Needs detailed ROI analysis and security compliance information.",
+    "createdAt": "2024-01-22T15:10:00Z",
+    "updatedAt": "2024-02-29T09:50:00Z"
+  }
+]

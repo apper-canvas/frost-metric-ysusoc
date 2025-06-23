@@ -1,0 +1,74 @@
+[
+  {
+    "Id": 1,
+    "title": "Follow up on TechCorp proposal",
+    "description": "Check in with Sarah about internal review status and address any questions from stakeholders",
+    "contactId": 1,
+    "dealId": 1,
+    "assignedTo": "John Doe",
+    "priority": "high",
+    "status": "pending",
+    "dueDate": "2024-03-05T17:00:00Z",
+    "createdAt": "2024-03-01T09:00:00Z"
+  },
+  {
+    "Id": 2,
+    "title": "Prepare implementation plan for InnovateStart",
+    "description": "Create detailed implementation timeline and resource allocation plan for Michael's review",
+    "contactId": 2,
+    "dealId": 2,
+    "assignedTo": "Jane Smith",
+    "priority": "high",
+    "status": "in-progress",
+    "dueDate": "2024-03-04T12:00:00Z",
+    "createdAt": "2024-03-02T08:30:00Z"
+  },
+  {
+    "Id": 3,
+    "title": "Schedule executive demo for Creative Hub",
+    "description": "Coordinate with Emily to set up demo session with decision makers from all three locations",
+    "contactId": 3,
+    "dealId": 3,
+    "assignedTo": "John Doe",
+    "priority": "medium",
+    "status": "pending",
+    "dueDate": "2024-03-06T10:00:00Z",
+    "createdAt": "2024-03-01T14:20:00Z"
+  },
+  {
+    "Id": 4,
+    "title": "Send technical requirements document to RetailPlus",
+    "description": "Compile and send detailed technical specs and integration capabilities document to David",
+    "contactId": 4,
+    "dealId": 4,
+    "assignedTo": "Mike Johnson",
+    "priority": "medium",
+    "status": "completed",
+    "dueDate": "2024-03-03T16:00:00Z",
+    "createdAt": "2024-03-01T11:45:00Z"
+  },
+  {
+    "Id": 5,
+    "title": "Prepare compliance presentation for ConsultPro",
+    "description": "Create comprehensive presentation covering security, compliance, and data protection measures",
+    "contactId": 5,
+    "dealId": 5,
+    "assignedTo": "Sarah Wilson",
+    "priority": "low",
+    "status": "pending",
+    "dueDate": "2024-03-10T15:00:00Z",
+    "createdAt": "2024-03-02T10:15:00Z"
+  },
+  {
+    "Id": 6,
+    "title": "Update CRM with new lead information",
+    "description": "Input contact details and notes from yesterday's networking event leads",
+    "contactId": null,
+    "dealId": null,
+    "assignedTo": "John Doe",
+    "priority": "low",
+    "status": "overdue",
+    "dueDate": "2024-03-01T18:00:00Z",
+    "createdAt": "2024-02-29T16:30:00Z"
+  }
+]
