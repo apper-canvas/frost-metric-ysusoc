@@ -4,7 +4,7 @@ import ContactDetail from '@/components/pages/ContactDetail';
 import Pipeline from '@/components/pages/Pipeline';
 import Tasks from '@/components/pages/Tasks';
 import Settings from '@/components/pages/Settings';
-
+import CustomFields from '@/components/pages/CustomFields';
 export const routes = {
   dashboard: {
     id: 'dashboard',
@@ -42,12 +42,20 @@ export const routes = {
     icon: 'CheckSquare',
     component: Tasks
   },
-  settings: {
+settings: {
     id: 'settings',
     label: 'Settings',
     path: '/settings',
     icon: 'Settings',
     component: Settings
+  },
+  customFields: {
+    id: 'customFields',
+    label: 'Custom Fields',
+    path: '/custom-fields',
+    icon: 'Settings',
+    component: CustomFields,
+    hidden: true
   }
 };
 

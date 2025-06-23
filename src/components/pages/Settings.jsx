@@ -1,9 +1,18 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import Card from '@/components/atoms/Card';
 import Button from '@/components/atoms/Button';
 import ApperIcon from '@/components/ApperIcon';
-
 const Settings = () => {
+  const navigate = useNavigate();
+
+  const handleSettingClick = (settingKey) => {
+    if (settingKey === 'customFields') {
+      navigate('/custom-fields');
+    }
+    // Add other navigation handlers as needed
+  };
+
   const settingsGroups = [
     {
       title: 'Account Settings',
@@ -19,10 +28,10 @@ const Settings = () => {
       title: 'CRM Configuration',
       description: 'Customize your CRM settings and workflows',
       icon: 'Settings',
-      items: [
-        { label: 'Pipeline Stages', description: 'Customize your sales pipeline stages' },
-        { label: 'Custom Fields', description: 'Add custom fields to contacts and deals' },
-        { label: 'Deal Categories', description: 'Manage deal types and categories' }
+items: [
+        { key: 'pipelineStages', label: 'Pipeline Stages', description: 'Customize your sales pipeline stages' },
+        { key: 'customFields', label: 'Custom Fields', description: 'Add custom fields to contacts and deals' },
+        { key: 'dealCategories', label: 'Deal Categories', description: 'Manage deal types and categories' }
       ]
     },
     {
@@ -81,17 +90,26 @@ const Settings = () => {
                 </div>
               </div>
 
-              <div className="space-y-4">
+<div className="space-y-4">
                 {group.items.map((item, itemIndex) => (
                   <div
                     key={itemIndex}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                    onClick={() => item.key && handleSettingClick(item.key)}
                   >
                     <div>
                       <h4 className="font-medium text-gray-900">{item.label}</h4>
                       <p className="text-sm text-gray-600">{item.description}</p>
                     </div>
-                    <Button variant="ghost" size="sm" icon="ChevronRight">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      icon="ChevronRight"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        item.key && handleSettingClick(item.key);
+                      }}
+                    >
                       Configure
                     </Button>
                   </div>
