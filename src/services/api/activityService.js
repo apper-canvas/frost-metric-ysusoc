@@ -81,11 +81,52 @@ class ActivityService {
     return [...this.types];
   }
 
-  async getRecent(limit = 10) {
+async getRecent(limit = 10) {
     await delay(200);
     return [...this.activities]
       .sort((a, b) => new Date(b.date) - new Date(a.date))
       .slice(0, limit);
+  }
+
+  async createEmailActivity(emailData) {
+    await delay(400);
+    const emailActivity = {
+      type: 'email',
+      subject: emailData.subject,
+      notes: emailData.body || '',
+      contactId: emailData.contactId,
+      dealId: emailData.dealId || null,
+      direction: emailData.direction, // 'sent' or 'received'
+      sender: emailData.sender,
+      recipient: emailData.recipient,
+      date: emailData.date || new Date().toISOString(),
+      duration: 0
+    };
+    return this.create(emailActivity);
+  }
+
+  async getEmailActivities(contactId = null) {
+    await delay(250);
+    let emailActivities = this.activities.filter(a => a.type === 'email');
+    
+    if (contactId) {
+      emailActivities = emailActivities.filter(a => a.contactId === parseInt(contactId, 10));
+    }
+    
+    return emailActivities.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+
+  async getEmailsByDirection(direction, contactId = null) {
+    await delay(250);
+    let emails = this.activities.filter(a => 
+      a.type === 'email' && a.direction === direction
+    );
+    
+    if (contactId) {
+      emails = emails.filter(a => a.contactId === parseInt(contactId, 10));
+    }
+    
+    return emails.sort((a, b) => new Date(b.date) - new Date(a.date));
   }
 }
 

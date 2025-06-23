@@ -41,8 +41,15 @@ export const routes = {
     path: '/tasks',
     icon: 'CheckSquare',
     component: Tasks
+},
+  emailIntegration: {
+    id: 'emailIntegration',
+    label: 'Email Integration',
+    path: '/email-integration',
+    icon: 'Mail',
+    component: () => import('@/components/pages/EmailIntegration').then(m => m.default)
   },
-settings: {
+  settings: {
     id: 'settings',
     label: 'Settings',
     path: '/settings',

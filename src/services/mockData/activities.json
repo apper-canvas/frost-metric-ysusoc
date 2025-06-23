@@ -9,7 +9,7 @@
     "date": "2024-03-01T14:30:00Z",
     "duration": 30
   },
-  {
+{
     "Id": 2,
     "type": "email",
     "contactId": 2,
@@ -17,7 +17,10 @@
     "subject": "Implementation timeline discussion",
     "notes": "Sent detailed implementation plan and timeline. Michael requested faster rollout if possible. Exploring expedited options.",
     "date": "2024-03-02T09:15:00Z",
-    "duration": 0
+    "duration": 0,
+    "direction": "sent",
+    "sender": "sales@company.com",
+    "recipient": "michael.chen@techcorp.com"
   },
   {
     "Id": 3,
@@ -39,7 +42,7 @@
     "date": "2024-03-01T11:00:00Z",
     "duration": 45
   },
-  {
+{
     "Id": 5,
     "type": "email",
     "contactId": 5,
@@ -47,7 +50,10 @@
     "subject": "Security compliance documentation",
     "notes": "Sent security whitepaper and compliance certifications. Lisa will review with their technical team and get back to us.",
     "date": "2024-03-02T08:45:00Z",
-    "duration": 0
+    "duration": 0,
+    "direction": "sent",
+    "sender": "sales@company.com",
+    "recipient": "lisa.wang@datasystems.com"
   },
   {
     "Id": 6,

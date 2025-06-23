@@ -13,10 +13,13 @@ const ActivityItem = ({ activity, contact, showContact = true }) => {
     }
   };
 
-  const getActivityColor = (type) => {
+const getActivityColor = (type, direction = null) => {
     switch (type) {
       case 'call': return 'bg-blue-100 text-blue-600';
-      case 'email': return 'bg-green-100 text-green-600';
+      case 'email': 
+        if (direction === 'sent') return 'bg-green-100 text-green-600';
+        if (direction === 'received') return 'bg-blue-100 text-blue-600';
+        return 'bg-green-100 text-green-600';
       case 'meeting': return 'bg-purple-100 text-purple-600';
       case 'note': return 'bg-orange-100 text-orange-600';
       default: return 'bg-gray-100 text-gray-600';
@@ -36,8 +39,8 @@ const ActivityItem = ({ activity, contact, showContact = true }) => {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       className="flex gap-3 p-4 hover:bg-gray-50 rounded-lg transition-colors"
-    >
-      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${getActivityColor(activity.type)}`}>
+>
+      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${getActivityColor(activity.type, activity.direction)}`}>
         <ApperIcon name={getActivityIcon(activity.type)} className="w-4 h-4" />
       </div>
 
@@ -47,11 +50,20 @@ const ActivityItem = ({ activity, contact, showContact = true }) => {
             <h4 className="font-medium text-gray-900 truncate">
               {activity.subject}
             </h4>
-            
-            {showContact && contact && (
+{showContact && contact && (
               <p className="text-sm text-gray-600 mt-1">
                 with {contact.firstName} {contact.lastName}
               </p>
+            )}
+
+            {activity.type === 'email' && (activity.sender || activity.recipient) && (
+              <div className="text-sm text-gray-600 mt-1">
+                {activity.direction === 'sent' ? (
+                  <span>To: {activity.recipient}</span>
+                ) : (
+                  <span>From: {activity.sender}</span>
+                )}
+              </div>
             )}
 
             {activity.notes && (
