@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { toast } from 'react-toastify';
-import contactService from '@/services/api/contactService';
-import ContactCard from '@/components/molecules/ContactCard';
-import SearchBar from '@/components/molecules/SearchBar';
-import Button from '@/components/atoms/Button';
-import ApperIcon from '@/components/ApperIcon';
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import FilterBuilder from "@/components/organisms/FilterBuilder";
+import contactService from "@/services/api/contactService";
+import { getAll } from "@/services/api/customFieldService";
+import ApperIcon from "@/components/ApperIcon";
+import Contacts from "@/components/pages/Contacts";
+import SearchBar from "@/components/molecules/SearchBar";
+import ContactCard from "@/components/molecules/ContactCard";
+import Button from "@/components/atoms/Button";
 
 const ContactList = () => {
   const [contacts, setContacts] = useState([]);
@@ -13,9 +16,12 @@ const ContactList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-
-  useEffect(() => {
+  const [showFilterBuilder, setShowFilterBuilder] = useState(false);
+  const [activeFilter, setActiveFilter] = useState(null);
+  const [availableFields, setAvailableFields] = useState([]);
+useEffect(() => {
     loadContacts();
+    loadFilterFields();
   }, []);
 
   useEffect(() => {
@@ -45,6 +51,15 @@ const ContactList = () => {
       toast.error('Failed to load contacts');
     } finally {
       setLoading(false);
+}
+  };
+
+  const loadFilterFields = async () => {
+    try {
+      const fields = await contactService.getFilterFields();
+      setAvailableFields(fields);
+    } catch (error) {
+      console.error('Failed to load filter fields:', error);
     }
   };
 
@@ -52,6 +67,25 @@ const ContactList = () => {
     setSearchQuery(query);
   };
 
+  const handleApplyFilter = async (filterConfig) => {
+    if (!filterConfig) {
+      setActiveFilter(null);
+      setFilteredContacts(contacts);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const filtered = await contactService.advancedFilter(filterConfig);
+      setFilteredContacts(filtered);
+      setActiveFilter(filterConfig);
+      setShowFilterBuilder(false);
+    } catch (error) {
+      toast.error('Failed to apply filter');
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleEdit = (contact) => {
     // Edit functionality would open a modal in real implementation
     console.log('Edit contact:', contact);
@@ -134,23 +168,39 @@ const ContactList = () => {
     );
   }
 
-  return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-        <SearchBar 
-          onSearch={handleSearch}
-          placeholder="Search contacts..."
-          className="w-full sm:w-96"
-        />
-        <Button 
-          onClick={() => toast.info('Add contact functionality coming soon')}
-          variant="primary"
-          icon="Plus"
-          className="w-full sm:w-auto"
-        >
-          Add Contact
-        </Button>
-      </div>
+return (
+    <>
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          <div className="flex gap-3 w-full sm:w-auto">
+            <SearchBar 
+              onSearch={handleSearch}
+              placeholder="Search contacts..."
+              className="flex-1 sm:w-96"
+            />
+            <Button 
+              onClick={() => setShowFilterBuilder(true)}
+              variant="secondary"
+              icon="Filter"
+              className={activeFilter ? 'border-primary text-primary' : ''}
+            >
+              Advanced Filters
+              {activeFilter && (
+                <span className="ml-1 px-1.5 py-0.5 bg-primary text-white text-xs rounded">
+                  {activeFilter.conditions.length}
+                </span>
+              )}
+            </Button>
+          </div>
+          <Button 
+            onClick={() => toast.info('Add contact functionality coming soon')}
+            variant="primary"
+            icon="Plus"
+            className="w-full sm:w-auto"
+          >
+            Add Contact
+          </Button>
+        </div>
 
       {searchQuery && (
         <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -184,7 +234,7 @@ const ContactList = () => {
         </AnimatePresence>
       </div>
 
-      {filteredContacts.length === 0 && searchQuery && (
+{filteredContacts.length === 0 && searchQuery && (
         <div className="text-center py-12">
           <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <ApperIcon name="Search" className="w-8 h-8 text-gray-400" />
@@ -194,7 +244,17 @@ const ContactList = () => {
         </div>
       )}
     </div>
-  );
+
+    <FilterBuilder
+      isOpen={showFilterBuilder}
+      onClose={() => setShowFilterBuilder(false)}
+      onApplyFilter={handleApplyFilter}
+      entityType="contacts"
+      availableFields={availableFields}
+      currentFilter={activeFilter}
+    />
+  </>
+);
 };
 
 export default ContactList;
