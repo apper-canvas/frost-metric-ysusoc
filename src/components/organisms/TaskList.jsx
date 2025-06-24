@@ -193,9 +193,8 @@ const TaskList = () => {
             </button>
           ))}
         </div>
-
-        <Button 
-          onClick={() => toast.info('Add task functionality coming soon')}
+<Button 
+          onClick={() => toast.warning('Add Task feature not yet implemented. Task form needed.')}
           variant="primary"
           icon="Plus"
           className="w-full sm:w-auto"
@@ -203,7 +202,6 @@ const TaskList = () => {
           Add Task
         </Button>
       </div>
-
       {filteredTasks.length === 0 && !loading && (
         <div className="text-center py-12">
           <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -214,10 +212,10 @@ const TaskList = () => {
           </h3>
           <p className="text-gray-600 mb-4">
             {filter === 'all' ? 'Get started by creating your first task' : 'Try switching to a different filter'}
-          </p>
+</p>
           {filter === 'all' && (
             <Button 
-              onClick={() => toast.info('Add task functionality coming soon')}
+              onClick={() => toast.warning('Add Task feature not yet implemented. Task form needed.')}
               variant="primary"
               icon="Plus"
             >

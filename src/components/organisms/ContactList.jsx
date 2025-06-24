@@ -155,10 +155,10 @@ useEffect(() => {
         <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
           <ApperIcon name="Users" className="w-8 h-8 text-primary" />
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">No Contacts Yet</h3>
+<h3 className="text-lg font-semibold text-gray-900 mb-2">No Contacts Yet</h3>
         <p className="text-gray-600 mb-4">Get started by adding your first contact</p>
         <Button 
-          onClick={() => toast.info('Add contact functionality coming soon')} 
+          onClick={() => toast.warning('Add Contact feature not yet implemented. Contact form needed.')} 
           variant="primary"
           icon="Plus"
         >
@@ -191,9 +191,9 @@ return (
                 </span>
               )}
             </Button>
-          </div>
+</div>
           <Button 
-            onClick={() => toast.info('Add contact functionality coming soon')}
+            onClick={() => toast.warning('Add Contact feature not yet implemented. Contact form needed.')}
             variant="primary"
             icon="Plus"
             className="w-full sm:w-auto"
@@ -201,7 +201,6 @@ return (
             Add Contact
           </Button>
         </div>
-
       {searchQuery && (
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <span>Showing {filteredContacts.length} result{filteredContacts.length !== 1 ? 's' : ''} for "{searchQuery}"</span>
