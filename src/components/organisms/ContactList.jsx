@@ -9,6 +9,7 @@ import Contacts from "@/components/pages/Contacts";
 import SearchBar from "@/components/molecules/SearchBar";
 import ContactCard from "@/components/molecules/ContactCard";
 import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
 
 const ContactList = () => {
   const [contacts, setContacts] = useState([]);
@@ -19,6 +20,19 @@ const ContactList = () => {
   const [showFilterBuilder, setShowFilterBuilder] = useState(false);
   const [activeFilter, setActiveFilter] = useState(null);
   const [availableFields, setAvailableFields] = useState([]);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    company: '',
+    position: '',
+    tags: '',
+    notes: ''
+  });
+  const [formErrors, setFormErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 useEffect(() => {
     loadContacts();
     loadFilterFields();
@@ -85,7 +99,90 @@ useEffect(() => {
     } finally {
       setLoading(false);
     }
+};
+
+  const handleOpenContactForm = () => {
+    setShowContactForm(true);
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      company: '',
+      position: '',
+      tags: '',
+      notes: ''
+    });
+    setFormErrors({});
   };
+
+  const handleCloseContactForm = () => {
+    setShowContactForm(false);
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      company: '',
+      position: '',
+      tags: '',
+      notes: ''
+    });
+    setFormErrors({});
+  };
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user starts typing
+    if (formErrors[name]) {
+      setFormErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.firstName.trim()) errors.firstName = 'First name is required';
+    if (!formData.lastName.trim()) errors.lastName = 'Last name is required';
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+    return errors;
+  };
+
+  const handleSubmitContact = async (e) => {
+    e.preventDefault();
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const contactData = {
+        ...formData,
+        tags: formData.tags ? formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag) : []
+      };
+      await contactService.create(contactData);
+      await loadContacts();
+      toast.success('Contact created successfully');
+      handleCloseContactForm();
+    } catch (err) {
+      toast.error('Failed to create contact');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const handleEdit = (contact) => {
     // Edit functionality would open a modal in real implementation
     console.log('Edit contact:', contact);
@@ -158,7 +255,7 @@ useEffect(() => {
 <h3 className="text-lg font-semibold text-gray-900 mb-2">No Contacts Yet</h3>
         <p className="text-gray-600 mb-4">Get started by adding your first contact</p>
         <Button 
-          onClick={() => toast.warning('Add Contact feature not yet implemented. Contact form needed.')} 
+          onClick={handleOpenContactForm}
           variant="primary"
           icon="Plus"
         >
@@ -193,7 +290,7 @@ return (
             </Button>
 </div>
           <Button 
-            onClick={() => toast.warning('Add Contact feature not yet implemented. Contact form needed.')}
+            onClick={handleOpenContactForm}
             variant="primary"
             icon="Plus"
             className="w-full sm:w-auto"
@@ -242,7 +339,7 @@ return (
           <p className="text-gray-600">Try adjusting your search terms</p>
         </div>
       )}
-    </div>
+</div>
 
     <FilterBuilder
       isOpen={showFilterBuilder}
@@ -252,6 +349,172 @@ return (
       availableFields={availableFields}
       currentFilter={activeFilter}
     />
+
+    {/* Contact Form Modal */}
+    <AnimatePresence>
+      {showContactForm && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+          onClick={handleCloseContactForm}
+        >
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-gray-900">Add New Contact</h2>
+              <button
+                onClick={handleCloseContactForm}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <ApperIcon name="X" size={20} />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmitContact} className="p-6 space-y-4 overflow-y-auto max-h-[70vh]">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    First Name *
+                  </label>
+                  <Input
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleFormChange}
+                    placeholder="Enter first name"
+                    className={formErrors.firstName ? 'border-red-500' : ''}
+                  />
+                  {formErrors.firstName && (
+                    <p className="text-red-500 text-xs mt-1">{formErrors.firstName}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Last Name *
+                  </label>
+                  <Input
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleFormChange}
+                    placeholder="Enter last name"
+                    className={formErrors.lastName ? 'border-red-500' : ''}
+                  />
+                  {formErrors.lastName && (
+                    <p className="text-red-500 text-xs mt-1">{formErrors.lastName}</p>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email *
+                </label>
+                <Input
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleFormChange}
+                  placeholder="Enter email address"
+                  className={formErrors.email ? 'border-red-500' : ''}
+                />
+                {formErrors.email && (
+                  <p className="text-red-500 text-xs mt-1">{formErrors.email}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Phone
+                </label>
+                <Input
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleFormChange}
+                  placeholder="Enter phone number"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Company
+                </label>
+                <Input
+                  name="company"
+                  value={formData.company}
+                  onChange={handleFormChange}
+                  placeholder="Enter company name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Position
+                </label>
+                <Input
+                  name="position"
+                  value={formData.position}
+                  onChange={handleFormChange}
+                  placeholder="Enter job position"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Tags
+                </label>
+                <Input
+                  name="tags"
+                  value={formData.tags}
+                  onChange={handleFormChange}
+                  placeholder="Enter tags separated by commas"
+                />
+                <p className="text-xs text-gray-500 mt-1">Separate multiple tags with commas</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Notes
+                </label>
+                <textarea
+                  name="notes"
+                  value={formData.notes}
+                  onChange={handleFormChange}
+                  placeholder="Add any additional notes..."
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button
+                  type="button"
+                  onClick={handleCloseContactForm}
+                  variant="secondary"
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  disabled={submitting}
+                  className="flex-1"
+                >
+                  {submitting ? 'Creating...' : 'Create Contact'}
+                </Button>
+              </div>
+            </form>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   </>
 );
 };
