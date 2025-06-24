@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import taskService from '@/services/api/taskService';
 import contactService from '@/services/api/contactService';
 import TaskItem from '@/components/molecules/TaskItem';
+import TaskForm from '@/components/molecules/TaskForm';
 import Button from '@/components/atoms/Button';
 import Badge from '@/components/atoms/Badge';
 import ApperIcon from '@/components/ApperIcon';
@@ -15,7 +16,8 @@ const TaskList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all');
-
+  const [showTaskForm, setShowTaskForm] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
   useEffect(() => {
     loadData();
   }, []);
@@ -82,13 +84,38 @@ const TaskList = () => {
     } catch (err) {
       toast.error('Failed to update task');
     }
+};
+
+  const handleAddTask = () => {
+    setEditingTask(null);
+    setShowTaskForm(true);
   };
 
   const handleEdit = (task) => {
-    console.log('Edit task:', task);
-    toast.info('Edit functionality coming soon');
+    setEditingTask(task);
+    setShowTaskForm(true);
   };
 
+  const handleFormClose = () => {
+    setShowTaskForm(false);
+    setEditingTask(null);
+  };
+
+  const handleFormSubmit = async (taskData) => {
+    try {
+      if (editingTask) {
+        await taskService.update(editingTask.Id, taskData);
+        toast.success('Task updated successfully');
+      } else {
+        await taskService.create(taskData);
+        toast.success('Task created successfully');
+      }
+      await loadData();
+      handleFormClose();
+    } catch (err) {
+      toast.error(editingTask ? 'Failed to update task' : 'Failed to create task');
+    }
+  };
   const handleDelete = async (task) => {
     if (window.confirm(`Are you sure you want to delete "${task.title}"?`)) {
       try {
@@ -191,10 +218,10 @@ const TaskList = () => {
                 {filterOption.count}
               </Badge>
             </button>
-          ))}
+))}
         </div>
-<Button 
-          onClick={() => toast.warning('Add Task feature not yet implemented. Task form needed.')}
+        <Button 
+          onClick={handleAddTask}
           variant="primary"
           icon="Plus"
           className="w-full sm:w-auto"
@@ -215,7 +242,7 @@ const TaskList = () => {
 </p>
           {filter === 'all' && (
             <Button 
-              onClick={() => toast.warning('Add Task feature not yet implemented. Task form needed.')}
+              onClick={handleAddTask}
               variant="primary"
               icon="Plus"
             >
@@ -244,8 +271,36 @@ const TaskList = () => {
               />
             </motion.div>
           ))}
-        </AnimatePresence>
+</AnimatePresence>
       </div>
+
+      {/* Task Creation/Edit Modal */}
+      <AnimatePresence>
+        {showTaskForm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            onClick={handleFormClose}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-lg p-6 w-full max-w-md"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <TaskForm
+                task={editingTask}
+                contacts={contacts}
+                onSubmit={handleFormSubmit}
+                onCancel={handleFormClose}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
