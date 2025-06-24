@@ -1,15 +1,28 @@
-import { BrowserRouter, Routes, Route, ErrorBoundary } from 'react-router-dom';
-import { Suspense } from 'react';
+import React, { Component, Suspense } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Layout from './Layout';
 import { routeArray } from '@/config/routes';
 import NotFound from '@/components/pages/NotFound';
+import 'react-toastify/dist/ReactToastify.css';
 
-// Error Boundary Component for Route Errors
-const RouteErrorBoundary = ({ children }) => {
-  return (
-    <ErrorBoundary
-      fallback={
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h2>
@@ -22,8 +35,16 @@ const RouteErrorBoundary = ({ children }) => {
             </button>
           </div>
         </div>
-      }
-    >
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+const RouteErrorBoundary = ({ children }) => {
+  return (
+    <ErrorBoundary>
       {children}
     </ErrorBoundary>
   );
