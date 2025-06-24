@@ -1,8 +1,27 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import DashboardStats from '@/components/organisms/DashboardStats';
 import RecentActivity from '@/components/organisms/RecentActivity';
-
+import ApperIcon from '@/components/ApperIcon';
 const Dashboard = () => {
+  const navigate = useNavigate();
+
+  const handleQuickAction = (action) => {
+    switch (action) {
+      case 'contact':
+        navigate('/contacts');
+        break;
+      case 'deal':
+        navigate('/pipeline');
+        break;
+      case 'task':
+        navigate('/tasks');
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -38,27 +57,36 @@ const Dashboard = () => {
             <p className="text-white/90 mb-4 text-sm">
               Get started with common CRM tasks
             </p>
-            <div className="space-y-2">
-              <button className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg p-3 text-left transition-colors">
+<div className="space-y-2">
+              <button 
+                onClick={() => handleQuickAction('contact')}
+                className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg p-3 text-left transition-all duration-200 hover:scale-105"
+              >
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-                    <span className="text-sm">👤</span>
+                    <ApperIcon name="UserPlus" size={16} className="text-white" />
                   </div>
                   <span className="font-medium">Add New Contact</span>
                 </div>
               </button>
-              <button className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg p-3 text-left transition-colors">
+              <button 
+                onClick={() => handleQuickAction('deal')}
+                className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg p-3 text-left transition-all duration-200 hover:scale-105"
+              >
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-                    <span className="text-sm">💼</span>
+                    <ApperIcon name="Briefcase" size={16} className="text-white" />
                   </div>
                   <span className="font-medium">Create Deal</span>
                 </div>
               </button>
-              <button className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg p-3 text-left transition-colors">
+              <button 
+                onClick={() => handleQuickAction('task')}
+                className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg p-3 text-left transition-all duration-200 hover:scale-105"
+              >
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-                    <span className="text-sm">✅</span>
+                    <ApperIcon name="CheckSquare" size={16} className="text-white" />
                   </div>
                   <span className="font-medium">Add Task</span>
                 </div>
