@@ -5,6 +5,8 @@ import Pipeline from '@/components/pages/Pipeline';
 import Tasks from '@/components/pages/Tasks';
 import Settings from '@/components/pages/Settings';
 import CustomFields from '@/components/pages/CustomFields';
+import EmailIntegration from '@/components/pages/EmailIntegration';
+
 export const routes = {
   dashboard: {
     id: 'dashboard',
@@ -42,12 +44,12 @@ export const routes = {
     icon: 'CheckSquare',
     component: Tasks
 },
-  emailIntegration: {
+emailIntegration: {
     id: 'emailIntegration',
     label: 'Email Integration',
     path: '/email-integration',
     icon: 'Mail',
-    component: () => import('@/components/pages/EmailIntegration').then(m => m.default)
+    component: EmailIntegration
   },
   settings: {
     id: 'settings',
