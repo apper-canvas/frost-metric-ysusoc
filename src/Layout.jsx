@@ -1,9 +1,14 @@
-import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import ApperIcon from '@/components/ApperIcon';
-import { routeArray } from '@/config/routes';
-
+import { NavLink, Outlet, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import "@/index.css";
+import activitiesData from "@/services/mockData/activities.json";
+import contactsData from "@/services/mockData/contacts.json";
+import dealsData from "@/services/mockData/deals.json";
+import customFieldsData from "@/services/mockData/customFields.json";
+import tasksData from "@/services/mockData/tasks.json";
+import { routeArray } from "@/config/routes";
+import ApperIcon from "@/components/ApperIcon";
 const Layout = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
@@ -11,7 +16,15 @@ const Layout = () => {
   const visibleRoutes = routeArray.filter(route => !route.hidden);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
-
+  
+  const logout = () => {
+    // Clear any stored authentication data
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    // In a real app, you might redirect to login or call an auth service
+    console.log('User logged out');
+    // You could also dispatch a logout action or call a logout API
+  };
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-white">
       {/* Mobile Header */}
@@ -115,8 +128,15 @@ const Layout = () => {
                     >
                       <ApperIcon name={route.icon} className="w-5 h-5" />
                       {route.label}
-                    </NavLink>
+</NavLink>
                   ))}
+                  <button
+                    onClick={logout}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-gray-700 hover:bg-white hover:text-primary hover:shadow-sm mt-4 w-full"
+                  >
+                    <ApperIcon name="LogOut" className="w-5 h-5" />
+                    Logout
+                  </button>
                 </nav>
               </motion.div>
             </>
