@@ -113,68 +113,102 @@ class ContactService {
     };
   }
 
-  async create(contactData) {
+async create(contactData) {
     this.ensureClient();
 
+    // Validate required fields before sending to API
+    if (!contactData.firstName || !contactData.firstName.trim()) {
+      throw new Error('First name is required');
+    }
+    if (!contactData.lastName || !contactData.lastName.trim()) {
+      throw new Error('Last name is required');
+    }
+    if (!contactData.email || !contactData.email.trim()) {
+      throw new Error('Email is required');
+    }
+
+    // Ensure proper field mapping from camelCase to database snake_case
     const params = {
       records: [
         {
-          Name: `${contactData.firstName} ${contactData.lastName}`.trim(),
-          first_name: contactData.firstName || '',
-          last_name: contactData.lastName || '',
-          email: contactData.email || '',
-          phone: contactData.phone || '',
-          company: contactData.company || '',
-          position: contactData.position || '',
-          notes: contactData.notes || '',
-          Tags: Array.isArray(contactData.tags) ? contactData.tags.join(',') : '',
+          Name: `${contactData.firstName.trim()} ${contactData.lastName.trim()}`,
+          first_name: contactData.firstName.trim(),
+          last_name: contactData.lastName.trim(),
+          email: contactData.email.trim(),
+          phone: contactData.phone?.trim() || '',
+          company: contactData.company?.trim() || '',
+          position: contactData.position?.trim() || '',
+          notes: contactData.notes?.trim() || '',
+          Tags: Array.isArray(contactData.tags) ? contactData.tags.join(',') : (contactData.tags || ''),
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         }
       ]
     };
 
-    const response = await this.apperClient.createRecord(this.tableName, params);
-    
-    if (!response.success) {
-      console.error(response.message);
-      throw new Error(response.message);
-    }
-
-    if (response.results) {
-      const successfulRecords = response.results.filter(result => result.success);
-      const failedRecords = response.results.filter(result => !result.success);
+    try {
+      const response = await this.apperClient.createRecord(this.tableName, params);
       
-      if (failedRecords.length > 0) {
-        console.error(`Failed to create ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message || 'Failed to create contact');
+      }
+
+      if (response.results) {
+        const successfulRecords = response.results.filter(result => result.success);
+        const failedRecords = response.results.filter(result => !result.success);
         
-        failedRecords.forEach(record => {
-          record.errors?.forEach(error => {
-            toast.error(`${error.fieldLabel}: ${error.message}`);
+        if (failedRecords.length > 0) {
+          console.error(`Failed to create ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
+          
+          // Collect all error messages
+          let errorMessages = [];
+          failedRecords.forEach(record => {
+            if (record.errors && Array.isArray(record.errors)) {
+              record.errors.forEach(error => {
+                const fieldLabel = error.fieldLabel || 'Field';
+                const message = error.message || 'Validation error';
+                errorMessages.push(`${fieldLabel}: ${message}`);
+                toast.error(`${fieldLabel}: ${message}`);
+              });
+            }
+            if (record.message) {
+              errorMessages.push(record.message);
+              toast.error(record.message);
+            }
           });
-          if (record.message) toast.error(record.message);
-        });
+          
+          throw new Error(errorMessages.length > 0 ? errorMessages[0] : 'Failed to create contact');
+        }
+        
+        if (successfulRecords.length > 0) {
+          const created = successfulRecords[0].data;
+          return {
+            Id: created.Id,
+            firstName: created.first_name || '',
+            lastName: created.last_name || '',
+            email: created.email || '',
+            phone: created.phone || '',
+            company: created.company || '',
+            position: created.position || '',
+            notes: created.notes || '',
+            tags: created.Tags ? created.Tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [],
+            createdAt: created.created_at,
+            updatedAt: created.updated_at
+          };
+        }
       }
-      
-      if (successfulRecords.length > 0) {
-        const created = successfulRecords[0].data;
-        return {
-          Id: created.Id,
-          firstName: created.first_name || '',
-          lastName: created.last_name || '',
-          email: created.email || '',
-          phone: created.phone || '',
-          company: created.company || '',
-          position: created.position || '',
-          notes: created.notes || '',
-          tags: created.Tags ? created.Tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [],
-          createdAt: created.created_at,
-          updatedAt: created.updated_at
-        };
-      }
-    }
 
-    throw new Error('Failed to create contact');
+      throw new Error('No successful records returned from create operation');
+    } catch (error) {
+      // Re-throw with better context if it's our validation error
+      if (error.message.includes('required') || error.message.includes('Field:')) {
+        throw error;
+      }
+      // For other errors, provide a generic message
+      console.error('Contact creation error:', error);
+      throw new Error('Failed to create contact. Please check your input and try again.');
+    }
   }
 
   async update(id, contactData) {
