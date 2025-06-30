@@ -6,6 +6,7 @@ import Tasks from '@/components/pages/Tasks';
 import Settings from '@/components/pages/Settings';
 import CustomFields from '@/components/pages/CustomFields';
 import EmailIntegration from '@/components/pages/EmailIntegration';
+import CompanyDetails from '@/components/pages/CompanyDetails';
 
 export const routes = {
   dashboard: {
@@ -50,6 +51,13 @@ emailIntegration: {
     path: '/email-integration',
     icon: 'Mail',
     component: EmailIntegration
+  },
+  companyDetails: {
+    id: 'companyDetails',
+    label: 'Company',
+    path: '/company',
+    icon: 'Building',
+    component: CompanyDetails
   },
   settings: {
     id: 'settings',
