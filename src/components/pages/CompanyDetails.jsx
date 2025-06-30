@@ -13,14 +13,13 @@ const CompanyDetails = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCompany, setEditingCompany] = useState(null);
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     Name: '',
     Tags: '',
     Owner: '',
     address: '',
     industry: '',
-    size: '',
-    app_contact: ''
+    size: ''
   });
 
   // Load companies on component mount
@@ -55,24 +54,22 @@ const CompanyDetails = () => {
   const openModal = (company = null) => {
     setEditingCompany(company);
     if (company) {
-      setFormData({
+setFormData({
         Name: company.Name || '',
         Tags: company.Tags || '',
         Owner: company.Owner || '',
         address: company.address || '',
         industry: company.industry || '',
-        size: company.size || '',
-        app_contact: company.app_contact || ''
+        size: company.size || ''
       });
     } else {
-      setFormData({
+setFormData({
         Name: '',
         Tags: '',
         Owner: '',
         address: '',
         industry: '',
-        size: '',
-        app_contact: ''
+        size: ''
       });
     }
     setIsModalOpen(true);
@@ -81,14 +78,13 @@ const CompanyDetails = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setEditingCompany(null);
-    setFormData({
+setFormData({
       Name: '',
       Tags: '',
       Owner: '',
       address: '',
       industry: '',
-      size: '',
-      app_contact: ''
+      size: ''
     });
   };
 
@@ -368,18 +364,6 @@ const CompanyDetails = () => {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    App Contact
-                  </label>
-                  <Input
-                    type="text"
-                    name="app_contact"
-                    value={formData.app_contact}
-                    onChange={handleInputChange}
-                    placeholder="Primary contact ID"
-                  />
-                </div>
 
                 <div className="flex items-center justify-end gap-3 pt-4">
                   <Button
