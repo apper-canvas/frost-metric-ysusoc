@@ -158,7 +158,7 @@ useEffect(() => {
     return errors;
   };
 
-  const handleSubmitContact = async (e) => {
+const handleSubmitContact = async (e) => {
     e.preventDefault();
     const errors = validateForm();
     if (Object.keys(errors).length > 0) {
@@ -172,12 +172,21 @@ useEffect(() => {
         ...formData,
         tags: formData.tags ? formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag) : []
       };
-      await contactService.create(contactData);
-      await loadContacts();
-      toast.success('Contact created successfully');
-      handleCloseContactForm();
+      
+      const newContact = await contactService.create(contactData);
+      
+      if (newContact) {
+        // Refresh the contacts list to include the new contact
+        await loadContacts();
+        toast.success('Contact created successfully');
+        handleCloseContactForm();
+      } else {
+        toast.error('Failed to create contact - no data returned');
+      }
     } catch (err) {
-      toast.error('Failed to create contact');
+      console.error('Contact creation error:', err);
+      const errorMessage = err.message || 'Failed to create contact';
+      toast.error(errorMessage);
     } finally {
       setSubmitting(false);
     }

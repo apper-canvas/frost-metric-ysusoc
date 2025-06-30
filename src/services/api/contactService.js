@@ -146,7 +146,7 @@ async create(contactData) {
       ]
     };
 
-    try {
+try {
       const response = await this.apperClient.createRecord(this.tableName, params);
       
       if (!response.success) {
@@ -161,7 +161,7 @@ async create(contactData) {
         if (failedRecords.length > 0) {
           console.error(`Failed to create ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
           
-          // Collect all error messages
+          // Collect all error messages for user feedback
           let errorMessages = [];
           failedRecords.forEach(record => {
             if (record.errors && Array.isArray(record.errors)) {
@@ -201,12 +201,20 @@ async create(contactData) {
 
       throw new Error('No successful records returned from create operation');
     } catch (error) {
-      // Re-throw with better context if it's our validation error
-      if (error.message.includes('required') || error.message.includes('Field:')) {
+      // Re-throw validation errors with original message
+      if (error.message.includes('required') || 
+          error.message.includes('Field:') ||
+          error.message.includes('validation') ||
+          error.message.toLowerCase().includes('email')) {
         throw error;
       }
-      // For other errors, provide a generic message
+      
+      // For network or API errors, provide a more helpful message
       console.error('Contact creation error:', error);
+      if (error.message.includes('fetch') || error.message.includes('network')) {
+        throw new Error('Network error. Please check your connection and try again.');
+      }
+      
       throw new Error('Failed to create contact. Please check your input and try again.');
     }
   }
