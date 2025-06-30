@@ -426,21 +426,23 @@ class CustomFieldService {
       return 'Invalid field type';
     }
     
-    // Type-specific validation
+// Type-specific validation
     switch (field.type) {
-      case 'email':
+      case 'email': {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(value)) {
           return 'Please enter a valid email address';
         }
         break;
+      }
         
-      case 'phone':
-        const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-        if (!phoneRegex.test(value.replace(/[\s\-\(\)]/g, ''))) {
+      case 'phone': {
+        const phoneRegex = /^[+]?[1-9][\d]{0,15}$/;
+        if (!phoneRegex.test(value.replace(/[\s\-()]/g, ''))) {
           return 'Please enter a valid phone number';
         }
         break;
+      }
         
       case 'number':
         if (isNaN(value)) {
